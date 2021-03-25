@@ -9,9 +9,9 @@ export default function fv(rate, nper, pmt, pv) {
   }
 
   const interest = 1 + rate;
-  const powerOfRate = Math.pow(interest, nper);
+  const powerOfPeriodes = Math.pow(interest, nper);
 
-  return -pv * powerOfRate - (pmt / rate) * 1 * (powerOfRate - 1);
+  return -pv * powerOfPeriodes - (pmt / rate) * 1 * (powerOfPeriodes - 1);
 }
 
 export function fvWithReturn(rate, nper, pmt, pv) {
