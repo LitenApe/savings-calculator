@@ -18,7 +18,8 @@ export function fvWithReturn(rate, nper, pmt, pv) {
   const deposit = -pv - pmt * nper;
   const future_value = -fv(rate, nper, pmt, pv);
 
-  const formatter = new Intl.NumberFormat("nb-NO", {
+  const locale = navigator.languages[0] || 'nb-NO';
+  const formatter = new Intl.NumberFormat(locale, {
     maximumSignificantDigits: 2
   });
 
