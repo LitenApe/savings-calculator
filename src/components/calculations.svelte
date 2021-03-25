@@ -57,15 +57,17 @@
   <table>
     <thead>
       <th>Time (year)</th>
-      <th>Value</th>
+      <th>Deposit</th>
       <th>Return</th>
+      <th>Value</th>
     </thead>
     <tbody>
       {#each $progress as periode, i}
         <tr>
-          <td>{i}</td>
-          <td>{periode.value}</td>
+          <th scope="row">{i}</th>
+          <td>{periode.deposit}</td>
           <td>{periode.return}</td>
+          <td>{periode.value}</td>
         </tr>
       {/each}
     </tbody>

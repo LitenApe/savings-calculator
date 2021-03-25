@@ -20,11 +20,12 @@ export function fvWithReturn(rate, nper, pmt, pv) {
 
   const locale = navigator.languages[0] || 'nb-NO';
   const formatter = new Intl.NumberFormat(locale, {
-    maximumSignificantDigits: 2
+    maximumFractionDigits: 2
   });
 
   return {
+    deposit: formatter.format(-deposit),
     value: formatter.format((future_value)),
-    return: formatter.format((future_value + deposit))
+    return: formatter.format((future_value + deposit)),
   }
 }
