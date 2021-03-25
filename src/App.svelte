@@ -1,30 +1,36 @@
 <script>
-	export let name;
+	import Calculations from "./components/calculations.svelte";
+	import Sidebar from "./components/sidebar.svelte";
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<h1>Savings Calculator</h1>
+	<div>
+		<Sidebar />
+		<Calculations />
+	</div>
 </main>
 
 <style>
+	:global(body) {
+		margin: 0;
+		padding: 0;
+	}
+
 	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
+		height: 100%;
 	}
 
 	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
+		width: 1px;
+		height: 1px;
+
+		position: absolute;
+		overflow: hidden;
 	}
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	div {
+		display: flex;
+		height: 100%;
 	}
 </style>
