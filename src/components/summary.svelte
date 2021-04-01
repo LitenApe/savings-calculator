@@ -1,5 +1,10 @@
 <script>
   export let data;
+
+  const locale = navigator.languages[0] || "nb-NO";
+  const formatter = new Intl.NumberFormat(locale, {
+    maximumFractionDigits: 2,
+  });
 </script>
 
 <table id="overview">
@@ -11,27 +16,27 @@
   </thead>
   <tbody>
     <tr>
-      <td>1 years</td>
-      <td>{data[1].return}</td>
-      <td>{data[1].value}</td>
+      <td>2 years</td>
+      <td>{formatter.format(data[2].return)}</td>
+      <td>{formatter.format(data[2].value)}</td>
     </tr>
 
     <tr>
-      <td>2 years</td>
-      <td>{data[2].return}</td>
-      <td>{data[2].value}</td>
+      <td>4 years</td>
+      <td>{formatter.format(data[4].return)}</td>
+      <td>{formatter.format(data[4].value)}</td>
     </tr>
 
     <tr>
       <td>5 years</td>
-      <td>{data[5].return}</td>
-      <td>{data[5].value}</td>
+      <td>{formatter.format(data[5].return)}</td>
+      <td>{formatter.format(data[5].value)}</td>
     </tr>
 
     <tr>
       <td>10 years</td>
-      <td>{data[10].return}</td>
-      <td>{data[10].value}</td>
+      <td>{formatter.format(data[10].return)}</td>
+      <td>{formatter.format(data[10].value)}</td>
     </tr>
   </tbody>
 </table>

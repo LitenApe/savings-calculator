@@ -4,8 +4,20 @@
 
   export let data;
 
+  const locale = navigator.languages[0] || "nb-NO";
+  const formatter = new Intl.NumberFormat(locale, {
+    maximumFractionDigits: 2,
+  });
+
+  let container;
   let xAxisContainer;
   let yAxisContainer;
+  let x;
+  let y;
+
+  const margin = 20;
+  let width = 600 - margin * 2;
+  const height = 400 - margin * 2;
 
   export function getTickValues(values, range, pixelsPerLabel) {
     const numberOfTicks = Math.floor(range / pixelsPerLabel);
@@ -20,22 +32,20 @@
   }
 
   onMount(() => {
-    const xAxisContainer = d3.select("#x-axis-container");
-    const yAxisContainer = d3.select("#y-axis-container");
+    width = container.clientWidth - margin * 2;
 
-    const margin = 20;
-    const width = 600 - margin * 2;
-    const height = 400 - margin * 2;
+    xAxisContainer = d3.select("#x-axis-container");
+    yAxisContainer = d3.select("#y-axis-container");
 
-    const x = d3
+    x = d3
       .scaleBand()
       .padding(0.1)
       .range([margin, width - margin])
       .domain(data.map((_, i) => i));
 
-    const y = d3
+    y = d3
       .scaleLinear()
-      .range(height - margin, margin)
+      .range([height - margin, margin])
       .domain(d3.extent(data, (periode) => periode.value));
 
     const xAxis = d3.axisBottom(x).tickValues(
@@ -55,18 +65,20 @@
   });
 </script>
 
-<div>
-  <svg width="600" height="400">
+<div bind:this={container}>
+  <svg {width} height="400">
     <g id="data-container">
-      {#each data as periode, i}
-        <rect
-          x={i}
-          y={periode.value}
-          width="10"
-          height={periode.value}
-          fill="#123fff"
-        />
-      {/each}
+      {#if x != null}
+        {#each data as _, i}
+          <rect
+            x={x(i)}
+            y={y(i)}
+            width={x.bandwidth()}
+            height={y(i)}
+            fill="#123fff"
+          />
+        {/each}
+      {/if}
     </g>
     <g id="x-axis-container" />
     <g id="y-axis-container" />
@@ -83,9 +95,9 @@
       {#each data as periode, i}
         <tr>
           <th scope="row">{i}</th>
-          <td>{periode.deposit}</td>
-          <td>{periode.return}</td>
-          <td>{periode.value}</td>
+          <td>{formatter.format(periode.deposit)}</td>
+          <td>{formatter.format(periode.return)}</td>
+          <td>{formatter.format(periode.value)}</td>
         </tr>
       {/each}
     </tbody>
