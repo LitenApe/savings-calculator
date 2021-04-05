@@ -10,8 +10,6 @@
   });
 
   let container;
-  let xAxisContainer;
-  let yAxisContainer;
   let x;
   let y;
 
@@ -33,48 +31,54 @@
 
   onMount(() => {
     width = container.clientWidth - margin * 2;
-
-    xAxisContainer = d3.select("#x-axis-container");
-    yAxisContainer = d3.select("#y-axis-container");
-
-    x = d3
-      .scaleBand()
-      .padding(0.1)
-      .range([margin, width - margin])
-      .domain(data.map((_, i) => i));
-
-    y = d3
-      .scaleLinear()
-      .range([height - margin, margin])
-      .domain(d3.extent(data, (periode) => periode.value));
-
-    const xAxis = d3.axisBottom(x).tickValues(
-      getTickValues(
-        data.map((_, i) => i),
-        width - margin * 2,
-        25
-      )
-    );
-    const yAxis = d3.axisLeft(y);
-
-    xAxisContainer
-      .call(xAxis)
-      .attr("transform", `translate(0, ${height - margin})`);
-
-    yAxisContainer.call(yAxis).attr("transform", `translate(${margin}, 0)`);
   });
+
+  $: {
+    if (width != null) {
+      const xAxisContainer = d3.select("#x-axis-container");
+      const yAxisContainer = d3.select("#y-axis-container");
+
+      x = d3
+        .scaleBand()
+        .padding(0.1)
+        .range([margin * 4, width - margin])
+        .domain(data.map((_, i) => i));
+
+      y = d3
+        .scaleLinear()
+        .range([height - margin, margin])
+        .domain(d3.extent(data, (periode) => periode.value));
+
+      const xAxis = d3.axisBottom(x).tickValues(
+        getTickValues(
+          data.map((_, i) => i),
+          width - margin * 2,
+          25
+        )
+      );
+      const yAxis = d3.axisLeft(y);
+
+      xAxisContainer
+        .call(xAxis)
+        .attr("transform", `translate(0, ${height - margin})`);
+
+      yAxisContainer
+        .call(yAxis)
+        .attr("transform", `translate(${margin * 4}, 0)`);
+    }
+  }
 </script>
 
 <div bind:this={container}>
   <svg {width} height="400">
     <g id="data-container">
       {#if x != null}
-        {#each data as _, i}
+        {#each data as periode, i}
           <rect
             x={x(i)}
-            y={y(i)}
+            y={y(periode.value)}
             width={x.bandwidth()}
-            height={y(i)}
+            height={height - margin - y(periode.value)}
             fill="#123fff"
           />
         {/each}
